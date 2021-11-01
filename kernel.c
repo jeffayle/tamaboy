@@ -20,8 +20,8 @@ void main(void) {
     cpu_set_speed(0);
     cycle_count = cpu_get_state()->tick_counter;
     /* enable interrupts */
-    /*REG_IE |= 1;
-    REG_IME = 1;*/
+    REG_IE |= 1;
+    REG_IME = 1;
     while (1) {
         /* wait for vblank */
         /*SystemCall(5);*/
@@ -31,7 +31,10 @@ void main(void) {
         /* */
         next_frame_count += 546;
         /* do some processor stuff */
-        for (i=0; i<1000; i++) {
+        while (*cycle_count < next_frame_count) {
+            tamalib_step();
+            tamalib_step();
+            tamalib_step();
             tamalib_step();
         }
     }
