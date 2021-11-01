@@ -14,6 +14,7 @@ void main(void) {
     int i;
     u32_t* cycle_count;
     u32_t next_frame_count=0;
+    int next_frame_overflow=0;
 
     setup_vram();
     tamalib_register_hal(&tama_hal);
@@ -39,6 +40,11 @@ void main(void) {
         hw_set_button(BTN_RIGHT, (i&KEY_A)?1:0);
         /* set number of cycles to next frame */
         next_frame_count += 546;
+        next_frame_overflow += 0xa;
+        if (next_frame_overflow >= 0x10) {
+            next_frame_overflow &= 0xf;
+            next_frame_count++;
+        }
         /* do some processor stuff */
         while (*cycle_count < next_frame_count) {
             tamalib_step();
