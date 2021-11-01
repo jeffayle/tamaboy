@@ -26,7 +26,9 @@ static void set_lcd_icon(u8_t icon, bool_t val) {
 }
 
 static void set_frequency(u32_t freq) {
-
+    short const freq_table[] = {2016,2008,2000,1992,1984,1968,1951,1936};
+    int n = freq_table[freq];
+    REG_SOUND1CNT_X = n | 1<<15;
 }
 static void play_frequency(bool_t en) {
     if (en) REG_SOUNDCNT_L=0x1177;
