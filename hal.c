@@ -29,7 +29,8 @@ static void set_frequency(u32_t freq) {
 
 }
 static void play_frequency(bool_t en) {
-
+    if (en) REG_SOUNDCNT_L=0x1177;
+    else REG_SOUNDCNT_L=0x0077;
 }
 
 hal_t tama_hal = {

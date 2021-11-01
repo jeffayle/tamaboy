@@ -81,6 +81,14 @@ void setup_vram(void) {
     REG_BG3PC = 0;
     REG_BG3PD = 0x111;
 
+    /* set up sound */
+    REG_SOUNDCNT_X = 0x80;
+    REG_SOUNDCNT_L=0x0077;
+    REG_SOUNDCNT_H = 2;
+    REG_SOUND1CNT_L=0x0;
+    REG_SOUND1CNT_H= 2<<6 | 15<<12;
+    REG_SOUND1CNT_X= 1<<15;
+
     /* enable bg3 */
     REG_DISPCNT = (1<<11) + 2;
 }
