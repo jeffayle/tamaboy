@@ -3,6 +3,7 @@
 #include "tamalib/cpu.h"
 #include "hal.h"
 #include "rom.h"
+#include "interrupt.h"
 
 static int* const TILES = (int*)0x0600c000;
 static u16* const LCD_MAP = (u16*)0x06000000; /* 1k */
@@ -20,15 +21,23 @@ void main(void) {
     cpu_set_speed(0);
     cycle_count = cpu_get_state()->tick_counter;
     /* enable interrupts */
+    REG_IME = 0;
     REG_IE |= 1;
+    REG_DISPSTAT |= 8;
+    *(int*)0x03007FFC = (int*)&interrupt_handler;
     REG_IME = 1;
     while (1) {
         /* wait for vblank */
-        /*SystemCall(5);*/
+        SystemCall(5);
         /* copy buffer to screen */
         for (i=0; i<256; i++)
             ((u32*)LCD_MAP)[i] = ((u32*)LCD_BUFFER)[i];
-        /* */
+        /* process buttons */
+        i = ~REG_KEYINPUT;
+        hw_set_button(BTN_LEFT, (i&KEY_SELECT)?1:0);
+        hw_set_button(BTN_MIDDLE, (i&KEY_B)?1:0);
+        hw_set_button(BTN_RIGHT, (i&KEY_A)?1:0);
+        /* set number of cycles to next frame */
         next_frame_count += 546;
         /* do some processor stuff */
         while (*cycle_count < next_frame_count) {
