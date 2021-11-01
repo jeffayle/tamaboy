@@ -74,6 +74,12 @@ void setup_vram(void) {
         TILES[i] = 0x01010101;
 
     REG_BG3CNT = (3<<2) | (1<<7) | (0<<8) | (1<<14);
+    REG_BG3X = 0;
+    REG_BG3Y = -0x1400;
+    REG_BG3PA = 0x111;
+    REG_BG3PB = 0;
+    REG_BG3PC = 0;
+    REG_BG3PD = 0x111;
 
     /* enable bg3 */
     REG_DISPCNT = (1<<11) + 2;
