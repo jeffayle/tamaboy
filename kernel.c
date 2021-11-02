@@ -9,6 +9,7 @@ static int* const TILES = (int*)0x0600c000;
 static u16* const LCD_MAP = (u16*)0x06000000; /* 1k */
 
 void setup_vram(void);
+void copy_mono_pixels(int* dest, int graphics, char zero, char one);
 
 void main(void) {
     int i;
@@ -25,7 +26,7 @@ void main(void) {
     REG_IME = 0;
     REG_IE |= 1;
     REG_DISPSTAT |= 8;
-    *(int*)0x03007FFC = (int*)&interrupt_handler;
+    *(int*)0x03007FFC = (int)&interrupt_handler;
     REG_IME = 1;
     while (1) {
         /* wait for vblank */
@@ -63,8 +64,9 @@ void setup_vram(void) {
         LCD_BUFFER[i] = 0;
 
     /* set up palette */
-    BG_PALETTE[0] = 0xffff; /* white */
+    BG_PALETTE[0] = 0xffff; /* white (but really transparent) */
     BG_PALETTE[1] = 0x0000; /* black */
+    BG_PALETTE[2] = 0xffff; /* real white */
 
     /* tile 0 is blank */
     for (i=0; i<64/4; i++)
@@ -72,6 +74,12 @@ void setup_vram(void) {
     /* tile 1 is solid "pixel" */
     for ( ; i<128/4; i++)
         TILES[i] = 0x01010101;
+
+    /* tiles 2-130 are icons
+    there are 8 icons, each 4x4 tiles for a total of 128 tiles
+    or 256 calls to copy_mono_pixels (which loads half a tile at a time) */
+    for (i=0; i<256; i++)
+        copy_mono_pixels(TILES+8*(i+4), LCD_ICONS_RAW[i], 2,1);
 
     REG_BG3CNT = (3<<2) | (1<<7) | (0<<8) | (1<<14);
     REG_BG3X = 0;
@@ -91,4 +99,20 @@ void setup_vram(void) {
 
     /* enable bg3 */
     REG_DISPCNT = (1<<11) + 2;
+}
+
+void copy_mono_pixels(int* dest, int graphics, char zero, char one) {
+    int data;
+    int i = 1;
+    do {
+        data = (graphics&i) ? one : zero;
+        i <<= 1;
+        data |= ((graphics&i) ? one : zero) << 8;
+        i <<= 1;
+        data |= ((graphics&i) ? one : zero) << 16;
+        i <<= 1;
+        data |= ((graphics&i) ? one : zero) << 24;
+        i <<= 1;
+        *(dest++) = data;
+    } while (i != 0);
 }

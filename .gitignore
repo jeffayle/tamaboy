@@ -5,3 +5,4 @@
 *.swp
 *.swo
 tamalib/
+__pycache__/
