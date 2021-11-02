@@ -90,6 +90,8 @@ void setup_vram(void) {
 
     /* BG2 shows lcd icons */
     REG_BG2CNT = (3<<2) | (1<<7) | (1<<8);
+    REG_BG2Y = -(84<<8);
+    REG_BG2X = -(100<<8);
     for (i=0; i<128; i+=2) {
         ICONS_MAP[i/2] = (i+2) | ((i+3)<<8);
     }
@@ -111,8 +113,12 @@ void setup_vram(void) {
     REG_SOUND1CNT_H= 2<<6 | 15<<12;
     REG_SOUND1CNT_X= 1<<15;
 
+    /* set up lcd icon variables */
+    show_overlay = 0;
+    lcd_icon_state = 0;
+
     /* enable bg3 */
-    REG_DISPCNT = (1<<10) | (1<<11) | (2<<0);
+    REG_DISPCNT = (1<<11) | (2<<0);
 }
 
 void copy_mono_pixels(int* dest, int graphics, char zero, char one) {

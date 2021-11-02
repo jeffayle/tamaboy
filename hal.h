@@ -5,3 +5,4 @@ static u16* const ICONS_MAP = (u16*)0x06000800; /* 256 bytes */
 hal_t tama_hal;
 u8 LCD_BUFFER[1024];
 int show_overlay;
+int lcd_icon_state;

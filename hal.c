@@ -25,17 +25,20 @@ static void set_lcd_matrix(u8_t x, u8_t y, bool_t val) {
     LCD_BUFFER[index] = val;
 }
 static void set_lcd_icon(u8_t icon, bool_t en) {
-    int x = (icon&3)*4;
-    int y = (icon>=4)?4:0;
-    int col = en ? 1 : 3;
-    for (int dx=0; dx<4; dx++) {
-        for (int dy=0; dy<4; dy++) {
-           int i = 2 * ( (y+dy)*16 + dx+x );
-           copy_mono_pixels(TILES+8*(i+4), LCD_ICONS_RAW[i], 2,col);
-           copy_mono_pixels(TILES+8*(i+5), LCD_ICONS_RAW[i+1], 2,col);
+    if (((lcd_icon_state>>icon)&1) != en) {
+        int x = (icon&3)*4;
+        int y = (icon>=4)?4:0;
+        int col = en ? 1 : 3;
+        for (int dx=0; dx<4; dx++) {
+            for (int dy=0; dy<4; dy++) {
+               int i = 2 * ( (y+dy)*16 + dx+x );
+               copy_mono_pixels(TILES+8*(i+4), LCD_ICONS_RAW[i], 2,col);
+               copy_mono_pixels(TILES+8*(i+5), LCD_ICONS_RAW[i+1], 2,col);
+            }
         }
+        show_overlay = 3*60;
+        lcd_icon_state ^= 1<<icon;
     }
-    show_overlay = 3*60;
 }
 
 static void set_frequency(u32_t freq) {
