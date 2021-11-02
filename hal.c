@@ -35,6 +35,7 @@ static void set_lcd_icon(u8_t icon, bool_t en) {
            copy_mono_pixels(TILES+8*(i+5), LCD_ICONS_RAW[i+1], 2,col);
         }
     }
+    show_overlay = 3*60;
 }
 
 static void set_frequency(u32_t freq) {

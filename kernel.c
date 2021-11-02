@@ -31,11 +31,20 @@ void main(void) {
         /* copy buffer to screen */
         for (i=0; i<256; i++)
             ((u32*)LCD_MAP)[i] = ((u32*)LCD_BUFFER)[i];
+        /* show or hide the overlay */
+        if (show_overlay > 0) {
+            show_overlay--;
+            REG_DISPCNT |= 1<<10;
+        } else {
+            REG_DISPCNT &= ~(1<<10);
+        }
         /* process buttons */
         i = ~REG_KEYINPUT;
         hw_set_button(BTN_LEFT, (i&KEY_SELECT)?1:0);
         hw_set_button(BTN_MIDDLE, (i&KEY_A)?1:0);
         hw_set_button(BTN_RIGHT, (i&KEY_B)?1:0);
+        if (i & KEY_START)
+            show_overlay = 1;
         /* set number of cycles to next frame */
         next_frame_count += 546;
         next_frame_overflow += 0xa;
