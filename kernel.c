@@ -34,8 +34,8 @@ void main(void) {
         /* process buttons */
         i = ~REG_KEYINPUT;
         hw_set_button(BTN_LEFT, (i&KEY_SELECT)?1:0);
-        hw_set_button(BTN_MIDDLE, (i&KEY_B)?1:0);
-        hw_set_button(BTN_RIGHT, (i&KEY_A)?1:0);
+        hw_set_button(BTN_MIDDLE, (i&KEY_A)?1:0);
+        hw_set_button(BTN_RIGHT, (i&KEY_B)?1:0);
         /* set number of cycles to next frame */
         next_frame_count += 546;
         next_frame_overflow += 0xa;
