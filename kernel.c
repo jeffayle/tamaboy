@@ -63,8 +63,8 @@ void setup_vram(void) {
     /* set up palette */
     BG_PALETTE[0] = 0xffff; /* white (but really transparent) */
     BG_PALETTE[1] = 0x0000; /* black */
-    BG_PALETTE[2] = 0x0f55; /* icon overlay background */
-    BG_PALETTE[3] = 0x5555; /* lcd icon off */
+    BG_PALETTE[2] = 0x5294; /* icon overlay background */
+    BG_PALETTE[3] = 0x294a; /* lcd icon off */
 
     /* tile 0 is blank */
     for (i=0; i<64/4; i++)
