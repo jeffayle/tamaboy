@@ -5,9 +5,6 @@
 #include "rom.h"
 #include "interrupt.h"
 
-static int* const TILES = (int*)0x0600c000;
-static u16* const LCD_MAP = (u16*)0x06000000; /* 1k */
-
 void setup_vram(void);
 void copy_mono_pixels(int* dest, int graphics, char zero, char one);
 
@@ -66,7 +63,8 @@ void setup_vram(void) {
     /* set up palette */
     BG_PALETTE[0] = 0xffff; /* white (but really transparent) */
     BG_PALETTE[1] = 0x0000; /* black */
-    BG_PALETTE[2] = 0xffff; /* real white */
+    BG_PALETTE[2] = 0x0f55; /* icon overlay background */
+    BG_PALETTE[3] = 0x5555; /* lcd icon off */
 
     /* tile 0 is blank */
     for (i=0; i<64/4; i++)
@@ -79,8 +77,15 @@ void setup_vram(void) {
     there are 8 icons, each 4x4 tiles for a total of 128 tiles
     or 256 calls to copy_mono_pixels (which loads half a tile at a time) */
     for (i=0; i<256; i++)
-        copy_mono_pixels(TILES+8*(i+4), LCD_ICONS_RAW[i], 2,1);
+        copy_mono_pixels(TILES+8*(i+4), LCD_ICONS_RAW[i], 2,3);
 
+    /* BG2 shows lcd icons */
+    REG_BG2CNT = (3<<2) | (1<<7) | (1<<8);
+    for (i=0; i<128; i+=2) {
+        ICONS_MAP[i/2] = (i+2) | ((i+3)<<8);
+    }
+
+    /* BG3 shows lcd dot matrix */
     REG_BG3CNT = (3<<2) | (1<<7) | (0<<8) | (1<<14);
     REG_BG3X = 0;
     REG_BG3Y = -0x1400;
@@ -98,7 +103,7 @@ void setup_vram(void) {
     REG_SOUND1CNT_X= 1<<15;
 
     /* enable bg3 */
-    REG_DISPCNT = (1<<11) + 2;
+    REG_DISPCNT = (1<<10) | (1<<11) | (2<<0);
 }
 
 void copy_mono_pixels(int* dest, int graphics, char zero, char one) {

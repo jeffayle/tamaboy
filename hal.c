@@ -2,7 +2,6 @@
 #include "tamalib/tamalib.h"
 #include "hal_types.h"
 #include "hal.h"
-static u16* const LCD_MAP = (u16*)0x06000000; /* 1k */
 
 static void do_nothing(void) {
     return;

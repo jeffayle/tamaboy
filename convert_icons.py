@@ -28,8 +28,8 @@ def get_16_tile(sx,sy):
     return tiles 
 
 print("int const LCD_ICONS_RAW[256] = {")
-for y in [0,32]:
-    for x in [0,32,64,96]:
-        d = map(hex, get_16_tile(x,y))
+for y in range(0,64,8):
+    for x in range(0,128,8):
+        d = map(hex, get_tile(x,y))
         print("    %s,"%(", ".join(d)))
 print("};")
