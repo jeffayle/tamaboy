@@ -14,9 +14,6 @@ static void do_nothing(void) {
 static timestamp_t get_timestamp(void) {
     return 0;
 }
-static bool_t is_log_enabled(log_level_t type) {
-    return 0;
-}
 
 static void set_lcd_matrix(u8_t x, u8_t y, bool_t val) {
     int index;
@@ -53,16 +50,11 @@ static void play_frequency(bool_t en) {
 
 hal_t tama_hal = {
     .get_timestamp = get_timestamp,
-    .is_log_enabled = is_log_enabled,
     .set_lcd_matrix = set_lcd_matrix,
     .set_lcd_icon = set_lcd_icon,
     .set_frequency = set_frequency,
     .play_frequency = play_frequency,
 
-    .malloc = do_nothing,
-    .free = do_nothing,
-    .halt = do_nothing,
-    .log = do_nothing,
     .sleep_until = do_nothing,
     .update_screen = do_nothing,
     .handler = do_nothing
