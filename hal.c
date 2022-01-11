@@ -48,6 +48,7 @@ static void play_frequency(bool_t en) {
     else REG_SOUNDCNT_L=0x0077;
 }
 
+/* global variables */
 hal_t tama_hal = {
     .get_timestamp = get_timestamp,
     .set_lcd_matrix = set_lcd_matrix,
@@ -59,3 +60,6 @@ hal_t tama_hal = {
     .update_screen = do_nothing,
     .handler = do_nothing
 };
+u8 LCD_BUFFER[1024];
+int show_overlay;
+int lcd_icon_state;
