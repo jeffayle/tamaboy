@@ -23,6 +23,11 @@ needed.
 Press and hold the start button to show the lcd icon overlay. The overlay is
 shown for 3 seconds when an icon changes. Press start to dismiss.
 
+NB: Make sure to set the clock or your egg will never hatch. There should be
+animated arrows on the clock screen.
+
+*Do not* shut off your Gameboy or your Tamagotchi will die.
+
 ## Compile Time Dependencies
 
 - gba-dev from [devkitPro](https://devkitpro.org/wiki/Getting_Started)
