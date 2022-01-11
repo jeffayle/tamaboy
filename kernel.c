@@ -40,9 +40,9 @@ void main(void) {
         }
         /* process buttons */
         i = ~REG_KEYINPUT;
-        hw_set_button(BTN_LEFT, (i&KEY_SELECT)?1:0);
-        hw_set_button(BTN_MIDDLE, (i&KEY_A)?1:0);
-        hw_set_button(BTN_RIGHT, (i&KEY_B)?1:0);
+        hw_set_button(BTN_LEFT, (i&(KEY_SELECT|KEY_LEFT))?1:0);
+        hw_set_button(BTN_MIDDLE, (i&(KEY_A|KEY_UP|KEY_DOWN))?1:0);
+        hw_set_button(BTN_RIGHT, (i&(KEY_B|KEY_RIGHT))?1:0);
         if (i & KEY_START)
             show_overlay = 1;
         /* set number of cycles to next frame */
