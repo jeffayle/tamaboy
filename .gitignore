@@ -6,3 +6,4 @@
 *.swo
 __pycache__/
 tama.b
+rom.c
