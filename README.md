@@ -3,11 +3,6 @@
 tamaboy is a [Tamagotchi v1](http://adb.arcadeitalia.net/?mame=tama) emulator
 for Gameboy Advance based on [TamaLIB](https://github.com/jcrona/tamalib/).
 
-tamaboy has not yet been tested on real hardware. The `.gba` file will need to
-be patched with the [Nintendo
-Logo](https://github.com/mgba-emu/gbatek/blob/gh-pages/gba.md#gbacartridgeheader)
-to work on hardware.
-
 ## Usage
 
 The Tamagotchi's Left, Middle and Right buttons are mapped respectively to the
